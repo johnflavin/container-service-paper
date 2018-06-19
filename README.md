@@ -35,11 +35,11 @@ Here is Table 1, **Operating systems and analysis software**
 |       OS      | CentOS 5.10                                                                   | Fedora 20                                                                                 |
 |    Hardware   | x86_64 CPUs (Intel Xeon)                                                      | x86_64 CPUs (Intel Xeon)                                                                  |
 
-The reason I want to note this table is less about the specific values, more about the row titles and what kind of information they thought it relevant to include.
+The reason I want to note this table is less about the specific values, more about the row titles and what kind of information they thought it relevant to include. (If I can editorialize for a moment, were I making this table I would have transposed it. It seems like the information in the rows here seems more appropriate to put into columns, because they are completely unrelated categories of information. But the columns here are two instances of the same thing, and I would think those should be rows. But that's just me, I guess.)
 
-The Dice coefficient stuff is for the resting state comparisons. They used FSL MELODIC with a range of different parameter options. They compared results for the two clusters using the "binarized thresholded components".
+The mention of the Dice coefficient from before is explained in more detail as being used for the resting state comparisons. They processed the resting state images with FSL MELODIC with a range of different parameter options. They compared the resulting images from the two clusters, specifically the "binarized thresholded components", using the Dice coefficient.
 
-For the Freesurfer and CIVET results, they are using the cortical thickness. They did not compute any metrics directly on the outputs (because they are surfaces, I guess?) but instead used a MATLAB toolbox.
+For the Freesurfer and CIVET results, they are comparing the runs from the two clusters using the cortical thickness. The reason for this is that this measure is part of a "long pipeline" that, because there are more links in the computational chain, is more sensitive to numerical errors. When comparing the results they did not compute any metrics directly from/on the outputs (not sure why; because the surfaces are hard to work with, I guess?) but instead used a MATLAB toolbox.
 
 > Resampled thickness files from both Freesurfer and CIVET were imported to the SurfStat MATLAB toolbox for statistical analyses.
 
@@ -47,3 +47,35 @@ What stats did they gather from the Freesurfer cortical thickness surfaces? In F
 
 > surface maps of mean absolute difference, standard deviation of absolute difference, t-statistics and whole-brain random field theory (RFT) corrections for `n = 146` subjects at a significance value of `p < 0.05`, comparing the cortical thickness values extracted by Freesurfer build 1 on cluster A and cluster B.
 
+# What to do?
+
+I have looked around for a set of images to use, or a standard set of algorithms to test. I couldn't find anything on either end.
+
+See, for example, [How to unit test image processing code?](https://softwareengineering.stackexchange.com/questions/166517/how-to-unit-test-image-processing-code). The question is asking how to unit test image-processing code. The only answer is essentially to come up with your own input set, run it through your process, and use those inputs/outputs as a benchmark for all future code.
+
+I plan to use Freesurfer as one benchmark test. I could do one or two other things as well, but I don't know what they should be. On the other side, I also do not know what images to use. I could pull some off CNDA but I would need to get permission to do so. I could instead get some off TCIA, which I think makes images freely available.
+
+# Building the test machines
+
+The plan is to run a suite of containers on a suite of machines. The machines will be
+
+* A VM on my iMac
+* A VM on the NRG cluster
+* An AWS instance
+* (Possibly) A VM on my laptop
+
+I need to have a standard build for all the test machines. We will need docker, obviously, and an XNAT with...
+
+* The closest version to 1.7.5 we can get. (But make sure it is the same for all machines!)
+* A set of plugins
+    * Container service with some recent 2.0.0-SNAPSHOT version (make sure they're all the same)
+    * nrg_plugin_freesurfercommon (for the FS datatype)
+    * nrg_plugin_radiomics (for the radiomics datatype)
+    * Possibly others if I decide on some other containers
+* Containers to run
+    * Freesurfer (to be finished)
+    * Misha's radiomics
+    * Possibly others
+* Data
+    * A project (called "demo")
+    * Some standard set of images I haven't defined yet
