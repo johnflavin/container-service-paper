@@ -2,7 +2,7 @@
 
 Notes and stuff for a paper I'm writing (as of summer 2018) on the XNAT Container Service.
 
-# Reading Freesurfer reproducibility paper
+## Reading Freesurfer reproducibility paper
 [Reproducibility of neuroimaging analyses across operating systems](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4408913/)
 Tristan Glatard, Lindsay B. Lewis, Rafael Ferreira da Silva, Reza Adalat, Natacha Beck, Claude Lepage, Pierre Rioux, Marc-Etienne Rousseau, Tarek Sherif, Ewa Deelman, Najmeh Khalili-Mahani, and Alan C. Evans
 [doi:10.3389/fninf.2015.00012](https://dx.doi.org/10.3389%2Ffninf.2015.00012)
@@ -47,7 +47,7 @@ What stats did they gather from the Freesurfer cortical thickness surfaces? In F
 
 > surface maps of mean absolute difference, standard deviation of absolute difference, t-statistics and whole-brain random field theory (RFT) corrections for `n = 146` subjects at a significance value of `p < 0.05`, comparing the cortical thickness values extracted by Freesurfer build 1 on cluster A and cluster B.
 
-# What to do?
+## What to do?
 
 I have looked around for a set of images to use, or a standard set of algorithms to test. I couldn't find anything on either end.
 
@@ -55,7 +55,7 @@ See, for example, [How to unit test image processing code?](https://softwareengi
 
 I plan to use Freesurfer as one benchmark test. I could do one or two other things as well, but I don't know what they should be. On the other side, I also do not know what images to use. I could pull some off CNDA but I would need to get permission to do so. I could instead get some off TCIA, which I think makes images freely available.
 
-# Building the test machines
+## Building the test machines
 
 The plan is to run a suite of containers on a suite of machines. The machines will be
 
@@ -79,3 +79,10 @@ I need to have a standard build for all the test machines. We will need docker, 
 * Data
     * A project (called "demo")
     * Some standard set of images I haven't defined yet
+
+### Loadout
+
+* XNAT - commit a31b4382 (will probably be updated)
+* container service - commit 0633ebaa (possibly updated, but less likely than XNAT)
+* radiomics plugin - commit 77dd399
+* metlab docker image - version demo.2 - hash 1145a5d30b93
