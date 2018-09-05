@@ -79,7 +79,7 @@ Inputs can be replaced differently in the command line string than in other stri
         "false-value": "n"
     }
 
-If the input is not given a value at runtime, it takes its default value of `false`. The template string `[BIDS]` in the command line will be replaced with the resolved value `-b n` using the `command-line-flag` and `false-value` properties. If the runtime value is `true`, then the template string `[BIDS]` will be replaced by `-b y`.
+If the input is not given a value at runtime, it takes its default value of `false`, and the template string `[BIDS]` will be replaced by `-b n` on the command line. If the runtime value is `true`, then `[BIDS]` will be replaced by `-b y` on the command line.
 
 ## Mounts
 
@@ -161,7 +161,17 @@ The `dcm2niix-scan` wrapper has one external input for an XNAT scan and one deri
 
 ## Output Handlers
 
-stuff
+Output handlers specify how the Command's outputs are uploaded back into XNAT. They must be attached as a child to some existing object; for instance, the new files can be upoaded to a new resource on an existing session. There are currently two types of output handler: `Assessor`, which should be used to store XML structured data into XNAT's database as a session assessor, and `Resource`, which should be used to store all other files as an XNAT resource.
+
+This example output handler stores the NIFTI files created by `dcm2niix` as a new resource on an XNAT scan object:
+
+    {
+        "name": "nifti-resource",
+        "accepts-command-output": "nifti",
+        "as-a-child-of-wrapper-input": "scan",
+        "type": "Resource",
+        "label": "NIFTI"
+    }
 
 # Benchmarking / Validation
 
